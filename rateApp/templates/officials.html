@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All the Officials</title>
+    {% load static %} 
+    <link rel='stylesheet' href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <table id="customers" class="office">
+            <thead>
+                <tr >
+                    <th>Official Name:</th>
+                    <th>Party</th>
+                    <th>Elected Office</th>
+                    <th>Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for official in officials %}
+            <tr>
+                <td>{{official.name}}</td>
+                <td>{{official.party}}</td>
+                <td>{{official.elected_office}}</td>
+                <td><a href="/rate/{{ official.name }}/{{ official.elected_office }}">RATE</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+</body>
+</html>
