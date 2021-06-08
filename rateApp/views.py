@@ -81,7 +81,7 @@ def view_officials(request):
         #     "official": Official.objects.get()
         # }
         # request.session['official'] = official
-        return redirect('/show_officials', context)
+        return redirect('/show_officials/', context)
 
 
 def show_officials(request):

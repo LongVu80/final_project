@@ -7,7 +7,7 @@ body{
 
 }
 
-.navbarNav{
+.navbar{
     background-color: gray;
     color: white;
     float: left;
@@ -20,11 +20,7 @@ body{
     align-items: center;
     width: 100%;
 }
-ul{
-    background: grey;
-    height: 50px;
-    justify-items: center;
-}
+
 li{
     display: inline;
     margin-right: 15px;

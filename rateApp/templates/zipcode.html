@@ -10,17 +10,17 @@
 </head>
 <body>
   <header>
-    <nav>
+    <nav class="navbar">
       <ul>
         <li>
-          <a href="/logout/">Log Out</a>
+          <a href="/logout">Log Out</a>
         </li>
       </ul>
     </nav>
   </header>
   <h4>Please enter your zipcode to display all your representatives from your state</h4>
   <div>
-    <form action="/view-officials" method="post">
+    <form action="/view_officials" method="post">
         {% csrf_token %}
         ZipCode: <input type="text" name="zipcode">
         <button>Submit</button>
