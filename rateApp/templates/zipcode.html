@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enter the zipcode</title>
+  {% load static %} 
+  <link rel='stylesheet' href="{% static 'css/styles.css' %}">
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li>
+          <a href="/logout/">Log Out</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <h4>Please enter your zipcode to display all your representatives from your state</h4>
+  <div>
+    <form action="/view-officials" method="post">
+        {% csrf_token %}
+        ZipCode: <input type="text" name="zipcode">
+        <button>Submit</button>
+    </form>
+  </div>
+
+</body>
+</html>

@@ -9,6 +9,7 @@
     <link rel='stylesheet' href="{% static 'css/styles.css' %}">
 </head>
 <body>
+    <h1>Welcome to Login/Registration page</h1>
     <div class="container">
         <div class="row">
             {% if messages %}
@@ -18,7 +19,7 @@
                 {% endfor %}
             </section>
             {% endif %}
-            <h1>Welcome to Login/Registration page</h1>
+            
             <p>Please register</p>
             <form action='/register/' method='post'>
                 {% csrf_token %}

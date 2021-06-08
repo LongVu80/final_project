@@ -2,11 +2,11 @@ body{
     background-color: rgb(248, 226, 170);
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+
 }
 
-header{
-    margin-bottom: 100px;
-}
 .navbarNav{
     background-color: gray;
     color: white;
@@ -16,9 +16,15 @@ header{
 .container{
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
     width: 100%;
 }
-
+ul{
+    background: grey;
+    height: 50px;
+    justify-items: center;
+}
 li{
     display: inline;
     margin-right: 15px;
@@ -27,29 +33,29 @@ a{
     text-decoration: none;
     color: white;
 }
-table{
-    margin-right: -2px;
-}
+
 #customers {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
+    width: 100%;
+    }
 
-  }
-  
 #customers td, #customers th {
     border: 1px solid #ddd;
     padding: 8px;
-}
-  
+    }
+
 #customers tr:nth-child(even){background-color: #f2f2f2;}
-  
+
+#customers tr:hover {background-color: #ddd;}
+
 #customers th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
     background-color: #04AA6D;
     color: white;
-}
+    }
 
 .main{
     justify-content: center;

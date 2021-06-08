@@ -42,16 +42,16 @@ class User(models.Model):
 
     objects = UserManager()
 
-class Message(models.Model):
-    message = models.TextField()
-    user = models.ForeignKey(User, related_name="messages", on_delete = models.CASCADE)
+class Opinion(models.Model):
+    opinion = models.TextField()
+    user = models.ForeignKey(User, related_name="opinions", on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-class Comment(models.Model):
-    comment = models.TextField()
+class Reply(models.Model):
+    reply = models.TextField()
     user = models.ForeignKey(User, related_name="users", on_delete = models.CASCADE)
-    message = models.ForeignKey(Message, related_name="comments", on_delete = models.CASCADE)
+    opinion = models.ForeignKey(Opinion, related_name="replies", on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
