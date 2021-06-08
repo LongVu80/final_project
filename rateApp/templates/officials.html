@@ -22,11 +22,11 @@
     <div class="container">
         <table id="customers" class="office">
             <thead>
-                <tr >
+                <tr>
                     <th>Official Name:</th>
                     <th>Party</th>
                     <th>Elected Office</th>
-                    <th>Rate</th>
+                    <th>Official Profile Page</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,7 +35,7 @@
                 <td>{{official.name}}</td>
                 <td>{{official.party}}</td>
                 <td>{{official.elected_office}}</td>
-                <td><a href="/rate/{{ official.name }}/{{ official.elected_office }}">RATE</a></td>
+                <td><a href="/rate/{{ official.name }}/{{ official.elected_office }}" class="link">Give rate and share your thought on this official</a></td>
             </tr>
             {% endfor %}
             </tbody>

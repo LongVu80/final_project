@@ -64,7 +64,7 @@ a{
     border-bottom: solid black;
 }
 
-.mes{
+.comment{
     border-style: outset;
     margin-top: 100px;
     padding: 15px;
@@ -76,4 +76,8 @@ a{
 .name{
     display: flex;
     flex-direction: row;
+}
+
+.link{
+    color: blue;
 }

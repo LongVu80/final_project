@@ -24,17 +24,32 @@
         <form action="/rate/" method="POST">
             {% csrf_token %}
             <section>
-                <select>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
+                <select name="rating" id="rating">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
             </section>
             <button>submit</button>
         </form>
     </div>
+<div class="exist">
+    {% for rating in ratings %}
+        <div>
+            {%if rating.user.id == request.session.user_id%}
+                <p>You rate {{official_name}} at: {{rating.created_at}} </p>
+                <h4>{{rating.rating}}</h4>
+            {% else%}
+                <p> {{rating.user.firstName}} {{rating.user.lastname}} poste at{{rating.created_at}}</p>
+                <h4>{{rating.rating}}</h4>
+            {% endif %}
+        {% endfor %}
+        </div>
+</div>
+    
+
     <div class="opinion">
     <h2>Give Your Opinion</h2>
     <form action="/opinion" method="POST">
@@ -43,7 +58,7 @@
         <button type="submit">Post Message</button>
     </form>
 </div>
-<div class="exist">
+
     <h2 class="head">Your Opinion:</h2>
     {% for opinion in opinions %}
     <div class="mes">
@@ -55,7 +70,8 @@
             <p>{{ opinion.user.firstName }} {{ opinion.user.lastName}} posted at {{opinion.created_at}}:</p>
             <h4>{{opinion.opinion}}</h4>
             {% endif %}
-        </div>
+        {% endfor %}
+    </div>
             {% for reply in opinion.replies.all %}
                     {% if reply.user.id == request.session.user_id %}
                         <div class="comment">
@@ -80,7 +96,6 @@
                 </form>                    
             </div>
         </div>
-    {% endfor %}
 </div>
 </body>
 </html>

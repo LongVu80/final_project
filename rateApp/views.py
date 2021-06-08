@@ -121,13 +121,13 @@ def rate(request):
     # Comment.objects.create(comment = comment, user=user, official=official)
     # rating = request.POST['rating']
     # Rating.objects.create(rating=rating, user=user, official=official)
-    return redirect('/rating/')
+    return redirect('/rate/')
 
 def opinion(request):
     Opinion.objects.create(
         opinion = request.POST['opinion'], 
         user = User.objects.get(id=request.session['user_id']))
-    return redirect('rate/')
+    return redirect('/rate/')
 
 def reply(request):
     print(request.POST['opinion_id'])
