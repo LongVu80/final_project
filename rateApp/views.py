@@ -56,6 +56,38 @@ def success(request):
         return render(request, 'zipcode.html', context)
     return redirect ('/')
 
+# def view_officials(request):
+#     if request.method == "POST":
+#         zipcode = request.POST['zipcode']
+#         response = requests.get(f"https://www.googleapis.com/civicinfo/v2/representatives?key={API_KEY}&address={zipcode}&includeOffices=true")
+#         json = response.json()
+#         offices = json['offices']
+#         officials = json['officials']
+#     # add elected office to officials
+#         for office in offices:
+#             for ids in office['officialIndices']:
+#                 officials[ids]['elected_office'] = office['name']
+#                 all_officials = Official(
+#                     elected_office = officials[ids]['elected_office'],
+#                     # picture = officials[ids]['photoUrl'],
+#                     name = officials[ids]['name'],
+#                     party = officials[ids]['party'],
+#                     # website = officials[ids]['urls']
+#                 )
+#                 all_officials.save()
+#                 context = {
+#                     "officials": officials
+#                 }
+#                 request.session['officials'] = officials
+#                 all_officials = Official.objects.all().order_by('-id')
+#     return redirect ('/show_officials/', context)
+
+# def show_officials(request):
+#     officials = request.session['officials']
+#     print(officials)
+#     return render(request, 'officials.html', {'officials':officials})
+
+
 def view_officials(request):
     if request.method == "POST":
         zipcode = request.POST['zipcode']
@@ -72,15 +104,6 @@ def view_officials(request):
             "officials": officials
         }
         request.session['officials'] = officials
-        # official = Official.objects.create(
-        #     elected_office = 'elect_office',
-        #     name = 'name',
-        #     party = 'party'
-        #         )
-        # context = {
-        #     "official": Official.objects.get()
-        # }
-        # request.session['official'] = official
         return redirect('/show_officials/', context)
 
 
@@ -90,38 +113,65 @@ def show_officials(request):
     }
     return render(request, 'officials.html', context)
 
+# def rate_official(request, name, elected_office):
+#     print('User wants to rate', name, elected_office)
+#     context = {
+#     "official_name": name,
+#     "elected_office": elected_office,
+# }
+#     # official = Official.objects.get()
+#     # user_id = request.session['user_id']
+#     # comment = request.POST['comment']
+#     # reply = request.POST['message']
+#     # user = User.objects.get(id=user_id)
+#     # Reply.objects.create(reply=reply, user=user, official=official)
+#     # Comment.objects.create(comment = comment, user=user, official=official)
+#     # rating = request.POST['rating']
+#     # Rating.objects.create(rating=rating, user=user, official=official)
+#     return render(request, 'rate.html', context)
+
 def rate_official(request, name, elected_office):
-    print('User wants to rate', name, elected_office)
+    user_to_validate = User.objects.get(id=request.session['user_id'])
+    official_to_rate = Official.objects.get(name=name)
+    official_to_rate =official_to_rate[0]
+    if not Rating.objects.validate_oneUser_oneOfficial(user_to_validate, official_to_rate):
+        messages.error(request, 'You have already rated and opinioned this official')
+        return redirect(request, '/rate/')
     context = {
-    "official_name": name,
-    "elected_office": elected_office,
-}
-    # official = Official.objects.get()
-    # user_id = request.session['user_id']
-    # comment = request.POST['comment']
-    # reply = request.POST['message']
-    # user = User.objects.get(id=user_id)
-    # Reply.objects.create(reply=reply, user=user, official=official)
-    # Comment.objects.create(comment = comment, user=user, official=official)
-    # rating = request.POST['rating']
-    # Rating.objects.create(rating=rating, user=user, official=official)
+        'officials':official_to_rate
+        
+        }
     return render(request, 'rate.html', context)
 
-def rate(request):
-    Rating.objects.create(
-        rating = request.POST['rating'],
-        user = User.objects.get(id=request.session['user_id'])
-    )
-    # official = Official.objects.get()
-    # user_id = request.session['user_id']
-    # comment = request.POST['comment']
-    # reply = request.POST['message']
-    # user = User.objects.get(id=user_id)
-    # Reply.objects.create(reply=reply, user=user, official=official)
-    # Comment.objects.create(comment = comment, user=user, official=official)
-    # rating = request.POST['rating']
-    # Rating.objects.create(rating=rating, user=user, official=official)
-    return redirect('/rate/')
+def addRate(request):
+    if request.method == "POST":
+        officials = request.POST['officials']
+        official_to_rate = Official.objects.get(officials=officials)
+        user_id = request.session['user_id']
+        opinion = request.session['opinion']
+        user = User.objects.get(id=user_id)
+        Opinion.objects.create(opinion=opinion, user=user, officials=official_to_rate)
+        rating = request.POST['rating']
+        Rating.objects.create(rating=rating, user=user, officials=official_to_rate)
+        return redirect("/rate/")
+
+# def addRate(request):
+#     Rating.objects.create(
+#         rating = request.POST['rating'],
+#         user = User.objects.get(id=request.session['user_id']),
+#         official = Official.objects.get(id=request.section['officials'])
+        
+#     )
+#     # official = Official.objects.get()
+#     # user_id = request.session['user_id']
+#     # comment = request.POST['comment']
+#     # reply = request.POST['message']
+#     # user = User.objects.get(id=user_id)
+#     # Reply.objects.create(reply=reply, user=user, official=official)
+#     # Comment.objects.create(comment = comment, user=user, official=official)
+#     # rating = request.POST['rating']
+#     # Rating.objects.create(rating=rating, user=user, official=official)
+#     return redirect('/rate/')
 
 def opinion(request):
     Opinion.objects.create(

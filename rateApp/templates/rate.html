@@ -12,16 +12,16 @@
     <header>
         <nav class="navbar">
           <ul>
-            <li><a href="/logout/">Log Out</a></li>
+            <li><a href="/logout">Log Out</a></li>
             <li><a href="/success/">Enter Zipcode</a></li>
             <li><a href="/show_officials/">Dashboard</a></li>
           </ul>
         </nav>
     </header>
-    <h1>{{ official_name }} <br> {{ elected_office }}<br> {{officials.photo}}</h1>
+    <h1>{{ official_name }} <br> {{ elected_office }}<br></h1>
     <div class="rate">
         <h3>Rate Your Official</h3>
-        <form action="/rate/" method="POST">
+        <form action="/addRate/" method="POST">
             {% csrf_token %}
             <section>
                 <select name="rating" id="rating">

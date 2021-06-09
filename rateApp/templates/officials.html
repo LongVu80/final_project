@@ -13,32 +13,33 @@
         <nav class="navbar">
           <ul>
             <li>
-              <a href="/logout/">Log Out</a>
+              <a href="/logout">Log Out</a>
             </li>
             <li><a href="/success/">Enter Zipcode</a></li>
           </ul>
         </nav>
       </header>
-    <div class="container">
+      <div class="container">
         <table id="customers" class="office">
-            <thead>
-                <tr>
-                    <th>Official Name:</th>
-                    <th>Party</th>
-                    <th>Elected Office</th>
-                    <th>Official Profile Page</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for official in officials %}
-            <tr>
-                <td>{{official.name}}</td>
-                <td>{{official.party}}</td>
-                <td>{{official.elected_office}}</td>
-                <td><a href="/rate/{{ official.name }}/{{ official.elected_office }}" class="link">Give rate and share your thought on this official</a></td>
-            </tr>
-            {% endfor %}
-            </tbody>
+          <thead>
+              <tr>
+                <th>Official Name:</th>
+                <th>Party</th>
+                <th>Elected Office</th>
+                <th>Official Profile Page</th>
+              </tr>
+          </thead>
+          <tbody>
+          {% for official in officials %}
+          <tr>
+            <td>{{official.name}}</td>
+            <td>{{official.party}}</td>
+            <td>{{official.elected_office}}</td>
+            <td><a href="/rate/{{ official.name }}/{{ official.elected_office }}" class="link">Give rate and share your thought on this official</a></td>
+          </tr>
+          {% endfor %}
+          </tbody>
         </table>
+      </div>
 </body>
 </html>

@@ -77,7 +77,7 @@ class RatingManager(models.Manager):
 class Rating(models.Model):
     rating = models.IntegerField()
     user = models.ForeignKey(User, related_name='ratings', on_delete=models.CASCADE)
-    official = models.OneToOneField(Official, on_delete=models.CASCADE, primary_key=True)
+    # official = models.OneToOneField(Official, on_delete=models.CASCADE, primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
