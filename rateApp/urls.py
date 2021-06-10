@@ -10,7 +10,7 @@ urlpatterns = [
     path('show_officials/', views.show_officials),
     path('officials/', views.show_officials),
     path('rate_official/', views.rate_official),
-    path('addRate', views.addRate),
+    path('addRate/', views.addRate),
     path('rate/<str:name>/<str:elected_office>', views.rate_official),
     path('logout', views.logout),
     path('reply', views.reply),

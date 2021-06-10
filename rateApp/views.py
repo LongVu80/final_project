@@ -56,38 +56,6 @@ def success(request):
         return render(request, 'zipcode.html', context)
     return redirect ('/')
 
-# def view_officials(request):
-#     if request.method == "POST":
-#         zipcode = request.POST['zipcode']
-#         response = requests.get(f"https://www.googleapis.com/civicinfo/v2/representatives?key={API_KEY}&address={zipcode}&includeOffices=true")
-#         json = response.json()
-#         offices = json['offices']
-#         officials = json['officials']
-#     # add elected office to officials
-#         for office in offices:
-#             for ids in office['officialIndices']:
-#                 officials[ids]['elected_office'] = office['name']
-#                 all_officials = Official(
-#                     elected_office = officials[ids]['elected_office'],
-#                     # picture = officials[ids]['photoUrl'],
-#                     name = officials[ids]['name'],
-#                     party = officials[ids]['party'],
-#                     # website = officials[ids]['urls']
-#                 )
-#                 all_officials.save()
-#                 context = {
-#                     "officials": officials
-#                 }
-#                 request.session['officials'] = officials
-#                 all_officials = Official.objects.all().order_by('-id')
-#     return redirect ('/show_officials/', context)
-
-# def show_officials(request):
-#     officials = request.session['officials']
-#     print(officials)
-#     return render(request, 'officials.html', {'officials':officials})
-
-
 def view_officials(request):
     if request.method == "POST":
         zipcode = request.POST['zipcode']
@@ -96,52 +64,83 @@ def view_officials(request):
         offices = json['offices']
         officials = json['officials']
     # add elected office to officials
-        for i in offices:
-            for j in i['officialIndices']:
-                officials[j]['elected_office'] = i['name']
-                # officials[j]['photo']= officials['photoUrl']
-        context = {
-            "officials": officials
-        }
-        request.session['officials'] = officials
-        return redirect('/show_officials/', context)
-
+        for office in offices:
+            for ids in office['officialIndices']:
+                officials[ids]['elected_office'] = office['name']
+                all_officials = Official(
+                    elected_office = officials[ids]['elected_office'],
+                    # picture = officials[ids]['photoUrl'],
+                    name = officials[ids]['name'],
+                    party = officials[ids]['party'],
+                    # website = officials[ids]['urls']
+                )
+                all_officials.save()
+                context = {
+                    "officials": officials
+                }
+                request.session['officials'] = officials
+                all_officials = Official.objects.all().order_by('-id')
+    return redirect ('/show_officials/', context)
 
 def show_officials(request):
-    context = {
-        "officials": request.session['officials']
-    }
-    return render(request, 'officials.html', context)
+    officials = request.session['officials']
+    print(officials)
+    return render(request, 'officials.html', {'officials':officials})
 
-# def rate_official(request, name, elected_office):
-#     print('User wants to rate', name, elected_office)
+
+# def view_officials(request):
+#     if request.method == "POST":
+#         zipcode = request.POST['zipcode']
+#         response = requests.get(f"https://www.googleapis.com/civicinfo/v2/representatives?key={API_KEY}&address={zipcode}&includeOffices=true")
+#         json = response.json()
+#         offices = json['offices']
+#         officials = json['officials']
+#     # add elected office to officials
+#         for i in offices:
+#             for j in i['officialIndices']:
+#                 officials[j]['elected_office'] = i['name']
+#                 # officials[j]['photo']= officials['photoUrl']
+#         context = {
+#             "officials": officials
+#         }
+#         request.session['officials'] = officials
+#         return redirect('/show_officials/', context)
+
+
+# def show_officials(request):
 #     context = {
-#     "official_name": name,
-#     "elected_office": elected_office,
-# }
-#     # official = Official.objects.get()
-#     # user_id = request.session['user_id']
-#     # comment = request.POST['comment']
-#     # reply = request.POST['message']
-#     # user = User.objects.get(id=user_id)
-#     # Reply.objects.create(reply=reply, user=user, official=official)
-#     # Comment.objects.create(comment = comment, user=user, official=official)
-#     # rating = request.POST['rating']
-#     # Rating.objects.create(rating=rating, user=user, official=official)
-#     return render(request, 'rate.html', context)
+#         "officials": request.session['officials']
+#     }
+#     return render(request, 'officials.html', context)
 
 def rate_official(request, name, elected_office):
-    user_to_validate = User.objects.get(id=request.session['user_id'])
-    official_to_rate = Official.objects.get(name=name)
-    official_to_rate =official_to_rate[0]
-    if not Rating.objects.validate_oneUser_oneOfficial(user_to_validate, official_to_rate):
-        messages.error(request, 'You have already rated and opinioned this official')
-        return redirect(request, '/rate/')
+    print('User wants to rate', name, elected_office)
     context = {
-        'officials':official_to_rate
-        
-        }
+    "official_name": name,
+    "elected_office": elected_office,
+}
+    # official = Official.objects.get()
+    # user_id = request.session['user_id']
+    # comment = request.POST['comment']
+    # reply = request.POST['message']
+    # user = User.objects.get(id=user_id)
+    # Reply.objects.create(reply=reply, user=user, official=official)
+    # Comment.objects.create(comment = comment, user=user, official=official)
+    # rating = request.POST['rating']
+    # Rating.objects.create(rating=rating, user=user, official=official)
     return render(request, 'rate.html', context)
+
+# def rate_official(request, name, elected_office):
+#     user_to_validate = User.objects.get(id=request.session['user_id'])
+#     official_to_rate = Official.objects.get(name=name)
+#     if not Rating.objects.validate_oneUser_oneOfficial(user_to_validate, official_to_rate):
+#         messages.error(request, 'You have already rated and opinioned this official')
+#         return redirect(request, '/rate/')
+#     context = {
+#         'officials':official_to_rate
+        
+#         }
+#     return render(request, 'rate.html', context)
 
 def addRate(request):
     if request.method == "POST":
