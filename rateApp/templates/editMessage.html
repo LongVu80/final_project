@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit message</title>
+</head>
+<body>
+    <h2>Welcome, {{name.lastName}}!!</h2>
+    <p> To err is human, write something wrong? Edit it here</p>
+    
+    <form action="/updateMessage/{{ editMessage.id }}" method="post">
+        {% csrf_token %}
+        <section>
+            <label for='message'>Your message:</label>
+            <input type='text' name='message' id='message' value="{{editMessage.message}}">
+        </section>
+        <button>Save Edits</button>
+    </form>
+    <p><a href="/deleteMessage/{{message.id}}" class="del"><button>Delete Message</button></a></p>
+</body>
+</html>

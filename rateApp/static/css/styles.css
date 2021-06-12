@@ -61,26 +61,64 @@ a{
     margin-left: 100px;
     border-bottom: solid black;
 }
-
-.comment{
-    border-style: outset;
-    margin-top: 100px;
-    padding: 15px;
+.message{
+    margin-top: 200px;
 }
-.box{
-    height: 100px;
-    width: 300px;
+.mes{
+    border-bottom: double black;
+    width: 500px;
+    border-top: solid black;
+}
+.comment{
+    margin-left: 50px;
+    
+}
+.exit{
+    
+}
+.comment1{
+    margin-left: 50px;
 }
 .name{
-    display: flex;
-    flex-direction: row;
+    border-bottom: double black;
+    width: 500px;
+    text-align: center;
 }
 
 .link{
     color: blue;
 }
 
+.profile{
+    background-color: rgb(39, 85, 39);
+}
+
 img{
     width: 100px;
 }
+.red{
+    color: red;
+}
 
+.box{
+    min-height: 75px;
+    width: 300px;
+}
+.box1{
+    min-height: 60px;
+    width: 225px;
+}
+.zipcode{
+    width: 300px;
+    position: absolute;
+    right: 0px;
+    text-align: right;
+}
+
+.del{
+    color: cornflowerblue;
+}
+
+.ed{
+    color: cornflowerblue;
+}

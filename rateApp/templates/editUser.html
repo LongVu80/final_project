@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile</title>
+    {% load static %} 
+    <link rel='stylesheet' href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+          <ul>
+            <li><a href="/logout">Log Out</a></li>
+            <li><a href="/zipcode/">Enter Zipcode</a></li>
+            <li><a href="/delete_user/{{user_id}}" class="red">Delete Your Profile</a></li>
+          </ul>
+        </nav>
+    </header>
+    <div class="daily">
+            <h1>Welcome, {{name.firstName}} {{name.lastName}}, Let's update your Information!</h1>
+            <div class="container">
+              <div class="row">
+                <div class='all'>
+                    <h4>{{editUser.firstName}} {{editUser.lastName}}</h4>
+                    <p>{{editUser.username}}</p>
+                    <p>{{editUser.email}}</p>
+                </div>
+                  
+                  <p>Please register</p>
+                  <form action='{{editUser.id}}/updateUser/' method='post'>
+                      {% csrf_token %}
+                      <section>
+                          <label for='firstName'>First Name:</label>
+                          <input type='text' name='firstName' id='firstName'>
+                      </section>
+                      <section>
+                          <label for='lastName'>Last Name:</label>
+                          <input type='text' name='lastName' id='lastName'>
+                      </section>
+                      <section>
+                          <label for='username'>Username:</label>
+                          <input type='text' name='username' id='username'>
+                      </section>
+                      <section>
+                          <label for='email'>Email:</label>
+                          <input type='text' name='email' id='email'>
+                      </section>
+                      <section>
+                          <label for='password'>Password:</label>
+                          <input type='password' name='password' id='password'>
+                      </section>
+                      <section>
+                          <label for='confirm'>Confirm Password</label>
+                          <input type='password' name='confirm' id='confirm'>
+                      </section>
+                      <button>Save Edits</button>
+                      <p><a href="/delUser/{{user.id}}" class="del"><button>Delete Message</button></a></p>
+                  </form>
+              </div>
+            </div>
+            </div>
+          
+    </div>    
+    
+</body>
+</html>

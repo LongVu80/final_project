@@ -1,15 +1,14 @@
 from django.db import models
-from django.db import models
 import re
 
 class UserManager(models.Manager):
     def validate(self, form):
         errors = {}
         if len(form['firstName']) < 2:
-            errors['firstName'] = "First Name must be at least 2 characters"
+            error['firstName'] = "First Name must be at least 2 characters"
 
         if len(form['lastName']) < 2:
-            errors['lastName'] = "Last Name must be at least 2 characters"
+            error['lastName'] = "Last Name must be at least 2 characters"
 
         EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
         if not EMAIL_REGEX.match(form['email']):
@@ -39,31 +38,40 @@ class User(models.Model):
     password = models.CharField(max_length=45)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
     objects = UserManager()
 
+    def __str__ (self):
+        return f"{self.username}"
+
+    
 class Opinion(models.Model):
     opinion = models.TextField()
+    elected_office = models.CharField(max_length=45)
+    name = models.CharField(max_length=45)
+    state = models.CharField(max_length=45)
     user = models.ForeignKey(User, related_name="opinions", on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 class Reply(models.Model):
     reply = models.TextField()
-    user = models.ForeignKey(User, related_name="users", on_delete = models.CASCADE)
+    elected_office = models.CharField(max_length=45)
+    name = models.CharField(max_length=45)
+    state = models.CharField(max_length=45)
+    user = models.ForeignKey(User, related_name="userReply", on_delete = models.CASCADE)
     opinion = models.ForeignKey(Opinion, related_name="replies", on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-class Official(models.Model):
-    elected_office = models.CharField(max_length=255)
-    name = models.CharField(max_length=45)
-    state = models.CharField(max_length=45)
-    party = models.CharField(max_length=45)
-    website = models.CharField(max_length=255)
-    socialNetwork = models.CharField(max_length=255)
-    def __str__(self):
-        return f"{self.name} {self.party}"
+# class Official(models.Model):
+#     elected_office = models.CharField(max_length=255)
+#     name = models.CharField(max_length=45)
+#     state = models.CharField(max_length=45)
+#     party = models.CharField(max_length=45)
+#     website = models.CharField(max_length=255)
+#     socialNetwork = models.CharField(max_length=255)
+#     def __str__(self):
+#         return f"{self.name} {self.party}"
 
 class RatingManager(models.Manager):
     def validate_oneUser_oneOfficial(self, user, official):
@@ -77,8 +85,31 @@ class RatingManager(models.Manager):
 class Rating(models.Model):
     rating = models.IntegerField()
     user = models.ForeignKey(User, related_name='ratings', on_delete=models.CASCADE)
-    # official = models.OneToOneField(Official, on_delete=models.CASCADE, primary_key=True)
+    elected_office = models.CharField(max_length=45)
+    name = models.CharField(max_length=45)
+    state = models.CharField(max_length=45)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     objects = RatingManager()
+
+
+class Message(models.Model):
+    message = models.TextField()
+    user = models.ForeignKey(User, related_name="messages", on_delete = models.CASCADE )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Comment(models.Model):
+    comment = models.TextField()
+    user = models.ForeignKey(User, related_name="users", on_delete = models.CASCADE)
+    message = models.ForeignKey(Message, related_name="comments", on_delete = models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Image(models.Model):
+    title = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='images')
+
+    def __str__(self):
+        return self.title

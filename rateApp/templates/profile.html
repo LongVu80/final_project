@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile</title>
+    {% load static %} 
+    <link rel='stylesheet' href="{% static 'css/styles.css' %}">
+</head>
+<body class="profile">
+    <header>
+        <nav class="navbar">
+          <ul>
+              
+            <li><a href="/logout">Log Out</a></li>
+            <li><a href="/zipcode/">Enter Zipcode</a></li>
+            <li><a href="/daily/" class="red">Daily</a></li>
+            <li><a href = "{% url 'logout' %}">Logout here</a></li>
+          </ul>
+        </nav>
+    </header>
+    <div class='main'>
+        <nav>
+            <a href='/dashboard/'>Return to Dashboard</a>
+        </nav>
+        <div class='users'>
+            {% for user in name %}
+            <div class='user'>
+                <h3>{{user.firstName}} {{name.lastName}}</h3>
+                <h3>{{user.username}}</h3>
+                <h4>{{user.email}}</h4>
+                <a href='/theAdmin/users/{{user.id}}/editUser/'>Edit User</a>
+            </div>
+            {% endfor %}
+        </div>
+</body>
+</html>
+
