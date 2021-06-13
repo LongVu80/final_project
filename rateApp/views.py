@@ -38,7 +38,12 @@ def register(request):
         email = request.POST['email'],
         username = request.POST['username'],
         password = hashedPw
+        
     )
+    if request.method == "POST":
+        user = User()
+        if len(request.FILES) != 0:
+            user.image = request.FILES['image']
     request.session['user_id'] = newUser.id
     return redirect('/success/')
 
@@ -61,7 +66,37 @@ def success(request):
             'opinions' : Opinion.objects.all().order_by('-created_at'),
         }
         return render(request, 'daily.html', context)
-    return redirect ('/')
+
+def profile(request):
+    if 'user_id' not in request.session:
+        messages.error(request, 'You need to be logged in to view this page')
+        return redirect('/login/')
+    else:
+        user = User.objects.get(id=request.session['user_id'])
+        context = {
+            'user': user,
+        }
+        return render(request, 'profile.html', context)
+
+def editProfile(request, user_id):
+    if 'user_id' not in request.session:
+        messages.error(request, 'You need to be logged in to edit.')
+        return redirect('/login/')
+    editUser = User.objects.get(id=user_id)
+    context = {
+        'editUser': editUser,
+    }
+    return render(request, 'editUser.html', context)
+
+
+def updateProfile(request, user_id):
+    toUpdate = User.objects.get(id=user_id)
+    toUpdate.firstName = request.POST['firstName']
+    toUpdate.lastName = request.POST['lastName']
+    toUpdate.email = request.POST['email']
+    toUpdate.username = request.POST['username']
+    toUpdate.save()
+    return redirect(f'/profile/{user_id}')
 
 def zipcode(request):
     return render(request, 'zipcode.html')
@@ -146,16 +181,7 @@ def addReply(request, name, elected_office):
         opinion = Message.objects.get(id = request.POST['opinion_id']),
         user = User.objects.get(id=request.session['user_id']))
     return redirect(f"/rate_official/{name}/{elected_office}".format(name = name, elected_office = elected_office))
-# def addReply(request):
-#     print(request.POST['opinion_id'])
-#     if request.method == "POST":
-#         opinion = request.POST['opinion'], 
-#         reply = request.POST['reply'],
-#         user = User.objects.get(id=request.session['user_id'])
-#         Opinion.objects.create(opinion=opinion, reply=reply, user=user, name=name, elected_office=elected_office)
-#         Reply.objects.create(opinion=opinion, reply=reply, user=user, name=name, elected_office=elected_office)
-        
-#     return redirect('/rate/')
+
 def opinion_official(request, name, elected_office):
     print('User wants to rate', name, elected_office)
     context = {
@@ -226,7 +252,7 @@ def deleteMessage(request, message_id):
     return redirect('/success/')
 
 
-def like_message(request):
+def like_message(request, message_id):
     user = request.session['user_id']
     if request.method == 'POST':
         message_id = request.POST.get('message_id')

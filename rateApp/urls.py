@@ -40,4 +40,5 @@ urlpatterns = [
     path('like_message/', views.like_message, name="like-message"),
     path('like_comment/', views.like_comment, name="like-comment"),
     path('addMessage/', views.addMessage),
+    path('profile/', views.profile),
 ]

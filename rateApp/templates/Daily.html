@@ -13,8 +13,10 @@
         <nav class="navbar">
           <ul>
             <li><a href="/logout">Log Out</a></li>
-            <li><a href="/users">Members</a></li>
+            <li><a href="/users">All Users</a></li>
+            <li><a href="/profile/">Your Profile</a></li>
             <li><a href="/zipcode/">Enter Zipcode</a></li>
+            
           </ul>
         </nav>
     </header>
@@ -23,13 +25,13 @@
         
             <img src="{% static 'img/flag.jpeg' %}" alt='raising' class='image' />
         
-            <div class="boo">
+            <div>
                 <h4>If you would like to see all the federal and local representatives, to give rate and share opinion, please enter the zipcode below.</h4>
-            <form action="/view_officials" method="post">
-                {% csrf_token %}
-                Zipcode: <input type="text" name="zipcode">
-                <button>Enter</button>
-            </form>
+                <form action="/view_officials" method="post">
+                    {% csrf_token %}
+                    Zipcode: <input type="text" name="zipcode">
+                    <button>Enter</button>
+                </form>
             </div>
         
         <div class="message">

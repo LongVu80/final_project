@@ -8,32 +8,27 @@
     {% load static %} 
     <link rel='stylesheet' href="{% static 'css/styles.css' %}">
 </head>
-<body class="profile">
+<body>
     <header>
         <nav class="navbar">
-          <ul>
-              
+        <ul>
             <li><a href="/logout">Log Out</a></li>
-            <li><a href="/zipcode/">Enter Zipcode</a></li>
-            <li><a href="/daily/" class="red">Daily</a></li>
-            <li><a href = "{% url 'logout' %}">Logout here</a></li>
-          </ul>
+            <li><a href="/success/">Daily Feeds</a></li>
+            <li><a href="/zipcode/">Enter new zipcode</a></li>
+        </ul>
         </nav>
-    </header>
-    <div class='main'>
-        <nav>
-            <a href='/dashboard/'>Return to Dashboard</a>
-        </nav>
-        <div class='users'>
-            {% for user in name %}
-            <div class='user'>
-                <h3>{{user.firstName}} {{name.lastName}}</h3>
-                <h3>{{user.username}}</h3>
-                <h4>{{user.email}}</h4>
-                <a href='/theAdmin/users/{{user.id}}/editUser/'>Edit User</a>
-            </div>
-            {% endfor %}
-        </div>
+    </header> 
+    <div class='users'>
+        <h1>Profile page for {{users.firstName}} {{users.lastName}}</h1>
+        <h3>Your information:</h3>
+        <section>
+            <h3>{{user.firstName}} {{user.lastName}}</h3>
+            <h3>{{user.email}}</h3>
+            <h3>{{user.username}}</h3>
+            <a href='/editUser/{{user.id}}' class="green">Edit User</a>
+            <a href='/deleteUser/{{user.id}}'>Delete User</a>
+        </section>
+    </div>
 </body>
 </html>
 

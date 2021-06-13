@@ -19,6 +19,10 @@ body{
     width: 100%;
 }
 
+.row {
+    margin: 25px;
+}
+
 li{
     display: inline;
     margin-right: 15px;

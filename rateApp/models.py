@@ -1,5 +1,7 @@
 from django.db import models
 import re
+import datetime
+import os
 
 class UserManager(models.Manager):
     def validate(self, form):
@@ -29,6 +31,11 @@ class UserManager(models.Manager):
             errors['password'] = 'Password do not match'
 
         return errors
+def filepath(request, filename):
+    old_filename = filename
+    timeNow = datetime.datetime.now().strftime('%Y%m%d%H:%M:%S')
+    filename = "%s%s" % (timeNow, old_filename)
+    return os.path.join('uploads/', filename)
 
 class User(models.Model):
     firstName = models.CharField(max_length=45)
@@ -36,6 +43,7 @@ class User(models.Model):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=45)
     password = models.CharField(max_length=45)
+    image = models.ImageField(upload_to=filepath, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager()
@@ -43,7 +51,7 @@ class User(models.Model):
     def __str__ (self):
         return f"{self.username}"
 
-    
+
 class Opinion(models.Model):
     opinion = models.TextField()
     elected_office = models.CharField(max_length=45)
