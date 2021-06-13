@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
-from django.contrib.auth.models import User
 from .models import *
 import bcrypt
 import requests
@@ -78,25 +77,6 @@ def profile(request):
         }
         return render(request, 'profile.html', context)
 
-def editProfile(request, user_id):
-    if 'user_id' not in request.session:
-        messages.error(request, 'You need to be logged in to edit.')
-        return redirect('/login/')
-    editUser = User.objects.get(id=user_id)
-    context = {
-        'editUser': editUser,
-    }
-    return render(request, 'editUser.html', context)
-
-
-def updateProfile(request, user_id):
-    toUpdate = User.objects.get(id=user_id)
-    toUpdate.firstName = request.POST['firstName']
-    toUpdate.lastName = request.POST['lastName']
-    toUpdate.email = request.POST['email']
-    toUpdate.username = request.POST['username']
-    toUpdate.save()
-    return redirect(f'/profile/{user_id}')
 
 def zipcode(request):
     return render(request, 'zipcode.html')
@@ -198,19 +178,6 @@ def deleteReply(request, reply_id):
         return redirect('/rate/')
     return redirect('/rate/')
 
-# def image_upload_view(request):
-#     """Process images uploaded by users"""
-#     if request.method == 'POST':
-#         form = ImageForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             # Get the current instance object to display in the template
-#             img_obj = form.instance
-#             return render(request, 'index.html', {'form': form, 'img_obj': img_obj})
-#     else:
-#         form = ImageForm()
-#     return render(request, '/success/', {'form': form})
-
 def addMessage(request):
     if 'user_id' not in request.session:
         messages.error(request, 'You need to be logged in to post a message')
@@ -256,14 +223,14 @@ def like_message(request, message_id):
     user = request.session['user_id']
     if request.method == 'POST':
         message_id = request.POST.get('message_id')
-        message_obj = Message.objects.get(id=message_id)
+        message_obj = Message.objects.get(message_id=message_id)
 
         if user in message_obj.likes.all():
             message_obj.likes.remove(user)
         else:
             message_obj.likes.add(user)
 
-        like, created= Like.objects.get_or_create(user=user, id=message_id)
+        like, created= Like.objects.get_or_create(user=user, message_id=message_id)
 
         if not created:
 
@@ -329,9 +296,9 @@ def like_comment(request):
         comment_obj = Comment.objects.get(id=comment_id)
 
         if user in comment_obj.likes.all():
-            comment_obj.likes.remove(user)
+            comment_obj.liked.remove(user)
         else:
-            comment_obj.likes.add(user)
+            comment_obj.liked.add(user)
 
         like, created = Like.objects.get_or_create(user=user, comment_id=comment_id)
 

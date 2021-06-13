@@ -1,7 +1,5 @@
 from django.db import models
 import re
-import datetime
-import os
 
 class UserManager(models.Manager):
     def validate(self, form):
@@ -31,11 +29,6 @@ class UserManager(models.Manager):
             errors['password'] = 'Password do not match'
 
         return errors
-def filepath(request, filename):
-    old_filename = filename
-    timeNow = datetime.datetime.now().strftime('%Y%m%d%H:%M:%S')
-    filename = "%s%s" % (timeNow, old_filename)
-    return os.path.join('uploads/', filename)
 
 class User(models.Model):
     firstName = models.CharField(max_length=45)
@@ -43,7 +36,6 @@ class User(models.Model):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=45)
     password = models.CharField(max_length=45)
-    image = models.ImageField(upload_to=filepath, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager()
@@ -111,6 +103,7 @@ class Message(models.Model):
 
     def total_likes(self):
         return self.likes.all().count()
+
     def __str__(self):
         return str(self.message)
 
@@ -120,28 +113,21 @@ class Message(models.Model):
 
 class Comment(models.Model):
     comment = models.TextField()
-    likes = models.ManyToManyField(User, related_name='comment_like')
+    liked = models.ManyToManyField(User, related_name='comment_like')
     user = models.ForeignKey(User, related_name="users", on_delete = models.CASCADE)
     message = models.ForeignKey(Message, related_name="comments", on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def number_of_likes(self):
-        return self.likes.all(). count()
+        return self.liked.all(). count()
 
     def __str__(self):
         return str(self.comment)
 
     @property
     def number_likes(self):
-        return self.likes.all().count()
-
-class Image(models.Model):
-    title = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='images')
-
-    def __str__(self):
-        return self.title
-
+        return self.liked.all().count()
+        
 LIKE_CHOICES = (
     ('like', 'like'),
     ('unlike', 'unlike'),

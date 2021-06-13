@@ -57,7 +57,7 @@
                 {% endif %}
                 <form action="{% url 'like-message' %}" method="POST" class="ui form">
                     {% csrf_token %}
-                    <input type="hidden" name="message_id" value="{{ message.id }}">
+                    <input type="hidden" name="message-id" value="{{ message.id }}">
                     {% if user not in message.likes.all %}
                         <button class="green">Like</button>
                     {% else %}
@@ -87,12 +87,12 @@
                     <form action="{% url 'like-comment' %}" method="POST" class="ui form">
                         {% csrf_token %}
                         <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                        {% if user not in comment.likes.all %}
+                        {% if user not in comment.liked.all %}
                             <button class="green">Like</button>
                         {% else %}
                             <button class="red">Unlike</button>
                         {% endif %}
-                        <strong>{{comment.likes.all.count}} Likes</strong>
+                        <strong>{{comment.liked.all.count}} Likes</strong>
                     </form>
                     <div class="comment">
                         <h5>Post your comment here:</h5>
