@@ -11,16 +11,21 @@
 <body>
     <header>
         <nav class="navbar">
-          <ul>
-            <li><a href="/logout">Log Out</a></li>
-            <li><a href="/success/">Enter Zipcode</a></li>
-            <li><a href="/show_officials/">Officials</a></li>
-            <li></li>
-          </ul>
+            <ul>
+                <li><a href="/logout">Log Out</a></li>
+                <li><a href="/users">Members</a></li>
+                <li><a href="/success/">Daily Feeds</a></li>
+                <li><a href="/zipcode/">Enter Zipcode</a></li>
+                <li><a href="/show_officials/">Officials</a></li>
+                <li></li>
+            </ul>
         </nav>
     </header>
-    <h2>{{ elected_office }}</h2>
+    <Div class="official">
+        <h2>{{ elected_office }}</h2>
         <h1> -- {{official_name}} --</h1>
+    </Div>
+    
     <div class="rate">
         <h3>Rate Your Official</h3>
         <form action="/addRate/{{official_name}}/{{elected_office}}" method="POST">
@@ -34,71 +39,69 @@
                     <option value="5">5</option>
                 </select>
             </section>
-            <input type="submit">Submit</input>
-            <button>submit</button>
+            <button type="submit">submit</button>
         </form>
     </div>
     <div class="rating">
         {% for rating in ratings %}
         <div>
             {% if rating.user.id == request.session.user_id %}
-                <p>You rate {{official_name}} at: {{rating.created_at}} </p>
-                <h4>{{rating.rating}}</h4>
+                <p>You rate {{ elected_office }} {{official_name}} a <b>[ {{rating.rating}} ]</b> out of 5 at: {{rating.created_at}} 
+                </p>
             {% else%}
-                <p> {{rating.user.firstName}} {{rating.user.lastname}} poste at{{rating.created_at}}</p>
-                <h4>{{rating.rating}}</h4>
+                <p> {{rating.user.firstName}} {{rating.user.lastName}} rated {{ elected_office }} {{official_name}} a <b>[ {{rating.rating}} ]</b> out of 5 at: {{rating.created_at}}</p>
+                
             {% endif %}
         </div>
-            {% endfor %}
-    </div>
-    
-
-    <div class="opinion">
-    <h2>Give Your Opinion</h2>
-    <form action="/addOpinion" method="POST">
-        {% csrf_token %}
-        <textarea class="box" name="opinion" placeholder="Type your opinion here!!"></textarea>
-        <button type="submit">Post Message</button>
-    </form>
-</div>
-
-    <h2 class="head">Your Opinion:</h2>
-    {% for opinion in opinions %}
-    <div class="mes">
-        {% if opinion.user.id == request.session.user_id %}
-            <p>You posted your opinion at: {{opinion.created_at}}:</p>
-            <h4>{{opinion.opinion}}</h4>
-            <p><a href="/deleteOpinion/{{opinion.id}}">Delete Your Opinion</a></p>
-        {% else %}
-            <p>{{ opinion.user.firstName }} {{ opinion.user.lastName}} posted at {{opinion.created_at}}:</p>
-            <h4>{{opinion.opinion}}</h4>
-            {% endif %}
         {% endfor %}
     </div>
-            {% for reply in opinion.replies.all %}
-                    {% if reply.user.id == request.session.user_id %}
-                        <div class="comment">
-                            <p>You replied at {{reply.created_at}}:</p>
-                            <h5>{{reply.reply}}</h5>
-                            <p><a href="/deleteReply/{{reply.id}}">Delete Reply</a></p>
-                        </div>
-                    {% else %}
-                        <div class="comment">
-                            <p>{{ reply.user.firstName }} {{ reply.user.lastName}} replied at {{reply.created_at}}:</p>
-                            <h5>{{reply.reply}}</h5>
-                        </div>
-                    {% endif %}
-            {% endfor %}
-            <div class="comment1">
-                <h5>Post a reply:</h5>
-                <form action="/reply" method="POST">
-                    {% csrf_token %}
-                    <textarea class="box" name="reply" placeholder="Type your reply here!!"></textarea>
-                    <input type="hidden" name="opinion_id" value="{{opinion.id}}">
-                    <p><button type="submit">Post Reply</button></p>
-                </form>                    
+
+    <div class="mes">
+        <h2>Give Your Opinion</h2>
+        <form action="/addOpinion/{{official_name}}/{{elected_office}}" method="POST">
+            {% csrf_token %}
+            <textarea class="box" name="opinion" placeholder="Type your opinion here!!"></textarea><br><br>
+            <button type="submit">Post Message</button>
+        </form>
+    </div>
+        <h2 >Your Opinion:</h2>
+        <div class="mes">
+            {% for opinion in opinions %}
+            <div>
+                {% if opinion.user.id == request.session.user_id %}
+                    <p>You rate {{official_name}} at: {{opinion.created_at}} </p>
+                    <h4>{{opinion.opinion}}</h4>
+                {% else%}
+                    <p> {{opinion.user.firstName}} {{opinion.user.lastName}} posted at{{opinion.created_at}}</p>
+                    <h4>{{opinion.opinion}}</h4>
+                {% endif %}
             </div>
+                {% endfor %}
         </div>
-</div>
+                {% for reply in opinion.replies.all %}
+                        {% if reply.user.id == request.session.user_id %}
+                            <div class= comment1>
+                                <p>You replied at {{reply.created_at}}:</p>
+                                <h5>{{reply.reply}}</h5>
+                                <p><a href="/deleteReply/{{reply.id}}">Delete Reply</a></p>
+                            </div>
+                        {% else %}
+                            <div class= comment1>
+                                <p>{{ reply.user.firstName }} {{ reply.user.lastName}} replied at {{reply.created_at}}:</p>
+                                <h5>{{reply.reply}}</h5>
+                            </div>
+                        {% endif %}
+                {% endfor %}
+                <div class="comment">
+                    <h5>Post a reply:</h5>
+                    <form action="/addReply/{{official_name}}/{{elected_office}}" method="POST">
+                        {% csrf_token %}
+                        <textarea class="box1" name="reply" placeholder="Type your reply here!!"></textarea>
+                        <input type="hidden" name="opinion_id" value="{{opinion.id}}">
+                        <p><button type="submit">Post Reply</button></p>
+                    </form>                    
+                </div>
+        </div>
+    </div>
 </body>
 </html>

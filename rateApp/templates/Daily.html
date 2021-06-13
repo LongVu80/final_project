@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Profile</title>
+    <title>The Daily Feeds</title>
     {% load static %} 
     <link rel='stylesheet' href="{% static 'css/styles.css' %}">
 </head>
@@ -13,24 +13,25 @@
         <nav class="navbar">
           <ul>
             <li><a href="/logout">Log Out</a></li>
+            <li><a href="/users">Members</a></li>
             <li><a href="/zipcode/">Enter Zipcode</a></li>
-            <li><a href="/editUser/{{user.id}}" class="red">Edit Your Profile</a></li>
           </ul>
         </nav>
     </header>
     <div class="daily">
             <h1>Welcome, {{name.firstName}} {{name.lastName}}, to our Daily Politic Dicussion Page!</h1>
-        <div class="edit">
-            <a href="/delUser/{{user.id}}">delete</a>
-        </div>
-        <div class="zipcode">
-            <h4>If you would like to see all the federal and local representatives, to give rate and share opinion, please enter the zipcode below.</h4>
+        
+            <img src="{% static 'img/flag.jpeg' %}" alt='raising' class='image' />
+        
+            <div class="boo">
+                <h4>If you would like to see all the federal and local representatives, to give rate and share opinion, please enter the zipcode below.</h4>
             <form action="/view_officials" method="post">
                 {% csrf_token %}
                 Zipcode: <input type="text" name="zipcode">
                 <button>Enter</button>
             </form>
-        </div>
+            </div>
+        
         <div class="message">
             <h2>Post a message for discussion:</h2>
             <form action="/message" method="POST">
@@ -52,14 +53,27 @@
                     <p>{{ message.user.firstName }} {{ message.user.lastName}} posted at {{message.created_at}}:</p>
                     <h4>{{message.message}}</h4>
                 {% endif %}
-                </div>
+                <form action="{% url 'like-message' %}" method="POST" class="ui form">
+                    {% csrf_token %}
+                    <input type="hidden" name="message_id" value="{{ message.id }}">
+                    {% if user not in message.likes.all %}
+                        <button class="green">Like</button>
+                    {% else %}
+                        <button class="red">Unlike</button>
+                    {% endif %}
+                    <strong>{{message.likes.all.count}} Likes</strong>
+                </form>
+                
+            </div>
                     {% for comment in message.comments.all %}
                             {% if comment.user.id == request.session.user_id %}
                                 <div class="comment1">
                                     <p>You commented at {{comment.created_at}}:</p>
                                     <h5>{{comment.comment}}</h5>
                                     <p><a href='/editComment/{{comment.id}}' class="ed">Edit Comment</a> / 
-                                        <a href="/deleteComment/{{comment.id}}" class="del">Delete Comment</a></p>
+                                        <a href="/deleteComment/{{comment.id}}" class="del">Delete Comment</a>
+                                    
+                                    </p>
                                 </div>
                             {% else %}
                                 <div class="comment1">
@@ -68,6 +82,16 @@
                                 </div>
                             {% endif %}
                     {% endfor %}
+                    <form action="{% url 'like-comment' %}" method="POST" class="ui form">
+                        {% csrf_token %}
+                        <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                        {% if user not in comment.likes.all %}
+                            <button class="green">Like</button>
+                        {% else %}
+                            <button class="red">Unlike</button>
+                        {% endif %}
+                        <strong>{{comment.likes.all.count}} Likes</strong>
+                    </form>
                     <div class="comment">
                         <h5>Post your comment here:</h5>
                         <form action="/comment" method="POST">
