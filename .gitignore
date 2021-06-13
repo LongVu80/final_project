@@ -1,2 +1,7 @@
 rateApp/secret.py
 env.py
+
+__pycache__/
+.vscode/
+venv/
+db.sqlite3
