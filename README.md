@@ -1,3 +1,3 @@
 # final_project
 
-deployed but failed at : https://18.118.110.63
+deployed successful but failed to connect at : https://18.118.110.63
