@@ -39,10 +39,6 @@ def register(request):
         password = hashedPw
         
     )
-    if request.method == "POST":
-        user = User()
-        if len(request.FILES) != 0:
-            user.image = request.FILES['image']
     request.session['user_id'] = newUser.id
     return redirect('/success/')
 
