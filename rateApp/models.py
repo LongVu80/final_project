@@ -5,10 +5,10 @@ class UserManager(models.Manager):
     def validate(self, form):
         errors = {}
         if len(form['firstName']) < 2:
-            error['firstName'] = "First Name must be at least 2 characters"
+            errors['firstName'] = "First Name must be at least 2 characters"
 
         if len(form['lastName']) < 2:
-            error['lastName'] = "Last Name must be at least 2 characters"
+            errors['lastName'] = "Last Name must be at least 2 characters"
 
         EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
         if not EMAIL_REGEX.match(form['email']):
