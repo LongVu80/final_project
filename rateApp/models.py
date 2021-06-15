@@ -96,49 +96,16 @@ class Rating(models.Model):
 
 class Message(models.Model):
     message = models.TextField()
-    likes = models.ManyToManyField(User,blank=True, default=None, related_name='post_likes')
     user = models.ForeignKey(User, related_name="messages", on_delete = models.CASCADE)
+    user_likes = models.ManyToManyField(User, related_name='user_likes')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def total_likes(self):
-        return self.likes.all().count()
-
-    def __str__(self):
-        return str(self.message)
-
-    @property
-    def number_likes(self):
-        return self.likes.all().count()
 
 class Comment(models.Model):
     comment = models.TextField()
-    liked = models.ManyToManyField(User, related_name='comment_like')
+    user_likes = models.ManyToManyField(User, related_name='comment_like')
     user = models.ForeignKey(User, related_name="users", on_delete = models.CASCADE)
     message = models.ForeignKey(Message, related_name="comments", on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    def number_of_likes(self):
-        return self.liked.all(). count()
-
-    def __str__(self):
-        return str(self.comment)
-
-    @property
-    def number_likes(self):
-        return self.liked.all().count()
-        
-LIKE_CHOICES = (
-    ('like', 'like'),
-    ('unlike', 'unlike'),
-)
-
-class Like(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # message = models.ForeignKey(Message, on_delete=models.CASCADE)
-    # comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    value = models.CharField(choices=LIKE_CHOICES, default='like', max_length=10)
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return str(self.post)

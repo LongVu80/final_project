@@ -37,8 +37,8 @@ urlpatterns = [
     path('updateComment/<int:comment_id>', views.updateComment),
     path('deleteUser/<int:user_id>', views.deleteUser),
     path('editUser/<int:user_id>', views.editUser),
-    path('like_message/', views.like_message, name="like-message"),
-    path('like_comment/', views.like_comment, name="like-comment"),
+    path('messageLike/<int:id>', views.message_like),
+    path('commentLike/<int:id>', views.comment_like),
     path('addMessage/', views.addMessage),
-    path('profile/', views.profile),
+    path('profile/', views.profile)
 ]

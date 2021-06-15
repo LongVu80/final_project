@@ -218,28 +218,16 @@ def deleteMessage(request, message_id):
     delete.delete()
     return redirect('/success/')
 
+def message_like(request, id):
+    likeMessage = Message.objects.get(id=id)
+    userLike = User.objects.get(id=request.session['user_id'])
+    likeMessage.user_likes.add(userLike)
+    return redirect('/success/')
 
-def like_message(request, message_id):
-    user = request.session['user_id']
-    if request.method == 'POST':
-        message_id = request.POST.get('message_id')
-        message_obj = Message.objects.get(message_id=message_id)
-
-        if user in message_obj.likes.all():
-            message_obj.likes.remove(user)
-        else:
-            message_obj.likes.add(user)
-
-        like, created= Like.objects.get_or_create(user=user, message_id=message_id)
-
-        if not created:
-
-            if like.value == 'Like':
-                like.value = 'Unlike'
-            else:
-                like.value = 'Like'
-
-        like.save()
+def comment_like(request, id):
+    likecomment = Comment.objects.get(id=id)
+    userLike = User.objects.get(id=request.session['user_id'])
+    likecomment.comment_like.add(userLike)
     return redirect('/success/')
 
 def addComment(request, message_id):
@@ -266,6 +254,7 @@ def comment(request):
     )
     return redirect('/success/')
 
+
 def editComment(request, comment_id):
     commEd = Comment.objects.get(id=comment_id)
     context = {
@@ -287,29 +276,6 @@ def deleteComment(request, comment_id):
     if commentDelete.user.id == request.session['user_id']:
         commentDelete.delete()
         return redirect('/success/')
-    return redirect('/success/')
-
-def like_comment(request):
-    user = request.session['user_id']
-    if request.method == 'POST':
-        comment_id = request.POST.get('comment_id')
-        comment_obj = Comment.objects.get(id=comment_id)
-
-        if user in comment_obj.likes.all():
-            comment_obj.liked.remove(user)
-        else:
-            comment_obj.liked.add(user)
-
-        like, created = Like.objects.get_or_create(user=user, comment_id=comment_id)
-
-        if not created:
-
-            if like.value == 'Like':
-                like.value = 'Unlike'
-            else:
-                like.value = 'Like'
-
-        like.save()
     return redirect('/success/')
 
 def editUser(request, user_id):
@@ -334,6 +300,7 @@ def editUser(request, user_id):
         'user': user,
     }
     return render(request, 'editUser.html', context)
+
 
 def updateUser(request, user_id):
     update = User.objects.get(id=user_id)
