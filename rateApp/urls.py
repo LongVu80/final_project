@@ -37,6 +37,7 @@ urlpatterns = [
     path('updateComment/<int:comment_id>', views.updateComment),
     path('deleteUser/<int:user_id>', views.deleteUser),
     path('editUser/<int:user_id>', views.editUser),
+    path('updateUser/<int:user_id>', views.updateUser),
     path('messageLike/<int:id>', views.message_like),
     path('commentLike/<int:id>', views.comment_like),
     path('addMessage/', views.addMessage),
