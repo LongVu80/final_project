@@ -41,5 +41,5 @@ urlpatterns = [
     path('messageLike/<int:id>', views.message_like),
     path('commentLike/<int:id>', views.comment_like),
     path('addMessage/', views.addMessage),
-    path('profile/<int:user_id>', views.profile)
+    path('profile/', views.profile)
 ]
