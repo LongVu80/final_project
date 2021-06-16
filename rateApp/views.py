@@ -257,11 +257,10 @@ def comment(request):
     print(request.POST['comment_id'])
     Comment.objects.create(
         comment = request.POST['comment'],
-        image = request.FILES['image'],
         user = User.objects.get(id=request.session['user_id']), 
         message = Message.objects.get(id = request.POST['comment_id'])
     )
-    return HttpResponseRedirect('/success/')
+    return redirect('/success/')
 
 
 def editComment(request, comment_id):
@@ -275,7 +274,6 @@ def editComment(request, comment_id):
 def updateComment(request, comment_id):
     toUpdate = Comment.objects.get(id=comment_id)
     toUpdate.comment = request.POST['comment'],
-    toUpdate.image = request.FILES['image'],
     #toUpdate.user_id = request.POST['user_id']
     toUpdate.save()
 

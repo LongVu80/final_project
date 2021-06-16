@@ -114,7 +114,6 @@ class Message(models.Model):
 
 class Comment(models.Model):
     comment = models.TextField()
-    image = models.ImageField(upload_to=filepath, null=True, blank=True)
     user_likes = models.ManyToManyField(User, related_name='comment_likes')
     user = models.ForeignKey(User, related_name="users", on_delete = models.CASCADE)
     message = models.ForeignKey(Message, related_name="comments", on_delete = models.CASCADE)

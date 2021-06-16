@@ -25,9 +25,6 @@
     
     <form action="/updateComment/{{ editComment.id }}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <section>
-            <label for="" class="form-label">Image</label>
-            <input type="file" name="image"><br>
             <label for='comment'>Your comment:</label>
             <textarea class="box" name="comment" placeholder="Type your comment here!!"></textarea>
         </section>

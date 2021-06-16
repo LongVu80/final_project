@@ -56,26 +56,25 @@
                     <h4>{{message.message}}</h4>
                     <p><a href='/editMessage/{{message.id}}' class="ed">Edit Message</a> / 
                         <a href="/deleteMessage/{{message.id}}" class="del">Delete Message</a></p>
+                        <p>{{ message.user_likes.count }} <br>
+                        <a href="/messageLike/{{message.id}}"><button>Like Message</button></a>
                 {% else %}
                     <p>{{ message.user.firstName }} {{ message.user.lastName}} posted at {{message.created_at}}:</p>
                     <h4>{{message.message}}</h4>
                 {% endif %}
-                <p>{{ message.user_likes.count }} <br>
-                <a href="/messageLike/{{message.id}}"><button>Like Message</button></a>
+                
+                
             </div>
             <div class="comment">
                 {% for comment in message.comments.all %}
                     {% if comment.user.id == request.session.user_id %}
                         <div class="comment1">
                             <p>You commented at {{comment.created_at}}:</p>
-                            {% if comment.image %}
-                                <img src="{{comment.image.url}}">
-                            {% endif %}
                             <h5>{{comment.comment}}</h5>
                             <p><a href='/editComment/{{comment.id}}' class="ed">Edit Comment</a> / 
                                 <a href="/deleteComment/{{comment.id}}" class="del">Delete Comment</a>
-                            <p>{{ comment.comment_like.count }} <br>
-                            <a href="/commentLike/{{message.id}}"><button>Like Comment</button></a>
+                                <p>{{ comment.comment_like.count }} <br>
+                                    <a href="/commentLike/{{comment.id}}"><button>Like Comment</button></a>
                             </p>
                         </div>
                     {% else %}
@@ -83,7 +82,8 @@
                             <p>{{ comment.user.firstName }} {{ comment.user.lastName}} commented at {{comment.created_at}}:</p>
                             <h5>{{comment.comment}}</h5>
                         </div>
-                        
+                        <p>{{ comment.comment_like.count }} <br>
+                            <a href="/commentLike/{{comment.id}}"><button>Like Comment</button></a>
                     {% endif %}
                 {% endfor %}
                     
@@ -93,8 +93,6 @@
                         <h5>Post your comment here:</h5>
                         <form action="/comment" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <label for="" class="form-label">Image</label>
-                            <input type="file" name="image"><br>
                             <textarea class="box1" name="comment" placeholder="Type your comment here!!"></textarea>
                             <input type="hidden" name="comment_id" value="{{message.id}}">
                             <p><button type="submit">Post Comment</button></p>
