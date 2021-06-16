@@ -30,7 +30,7 @@ urlpatterns = [
     path('deleteMessage/<int:message_id>', views.deleteMessage),
     path('deleteComment/<int:comment_id>', views.deleteComment),
     path('zipcode/', views.zipcode),
-    # path('upload/', views.image_upload_view),
+    path('uploadImage/', views.uploadImage),
     path('editMessage/<int:message_id>', views.editMessage),
     path('updateMessage/<int:message_id>', views.updateMessage),
     path('editComment/<int:comment_id>', views.editComment),
@@ -41,5 +41,5 @@ urlpatterns = [
     path('messageLike/<int:id>', views.message_like),
     path('commentLike/<int:id>', views.comment_like),
     path('addMessage/', views.addMessage),
-    path('profile/', views.profile)
+    path('profile/', views.profile),
 ]

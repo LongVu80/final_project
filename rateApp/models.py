@@ -1,14 +1,16 @@
 from django.db import models
 import re
+import datetime
+import os
 
 class UserManager(models.Manager):
     def validate(self, form):
         errors = {}
         if len(form['firstName']) < 2:
-            errors['firstName'] = "First Name must be at least 2 characters"
+            error['firstName'] = "First Name must be at least 2 characters"
 
         if len(form['lastName']) < 2:
-            errors['lastName'] = "Last Name must be at least 2 characters"
+            error['lastName'] = "Last Name must be at least 2 characters"
 
         EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
         if not EMAIL_REGEX.match(form['email']):
@@ -30,9 +32,16 @@ class UserManager(models.Manager):
 
         return errors
 
+def filepath(request, filename):
+    old_filename=filename
+    timeNow =datetime.datetime.now().strftime('%Y%m%d%H:%M:%S')
+    filename = "%s%s" % (timeNow, old_filename)
+    return os.path.join('uploads/', filename)
+
 class User(models.Model):
     firstName = models.CharField(max_length=45)
     lastName = models.CharField(max_length=45)
+    image = models.ImageField(upload_to=filepath, null=True, blank=True)
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=45)
     password = models.CharField(max_length=45)
@@ -96,6 +105,7 @@ class Rating(models.Model):
 
 class Message(models.Model):
     message = models.TextField()
+    image = models.ImageField(upload_to=filepath, null=True, blank=True)
     user = models.ForeignKey(User, related_name="messages", on_delete = models.CASCADE)
     user_likes = models.ManyToManyField(User, related_name='user_likes')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -104,8 +114,10 @@ class Message(models.Model):
 
 class Comment(models.Model):
     comment = models.TextField()
-    user_likes = models.ManyToManyField(User, related_name='comment_like')
+    image = models.ImageField(upload_to=filepath, null=True, blank=True)
+    user_likes = models.ManyToManyField(User, related_name='comment_likes')
     user = models.ForeignKey(User, related_name="users", on_delete = models.CASCADE)
     message = models.ForeignKey(Message, related_name="comments", on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+

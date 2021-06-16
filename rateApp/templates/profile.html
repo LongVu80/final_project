@@ -19,9 +19,15 @@
         </nav>
     </header> 
     <div class='users'>
-        <h1>Profile page for {{users.firstName}} {{users.lastName}}</h1>
+        <h1>Profile page for {{user.firstName}} {{user.lastName}}</h1>
         <h3>Your information:</h3>
+        
         <section>
+            {%for user in users%}
+                {% if user.image%}
+                    <img src="{{ user.image.url }}">
+                {% endif %}
+            {% endfor %}
             <h3>{{user.firstName}} {{user.lastName}}</h3>
             <h3>{{user.email}}</h3>
             <h3>{{user.username}}</h3>

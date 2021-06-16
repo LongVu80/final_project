@@ -4,6 +4,7 @@ from .models import *
 import bcrypt
 import requests
 from .secret import API_KEY
+from django.http import HttpResponseRedirect
 
 def index(request):
     return render(request, 'index.html')
@@ -35,17 +36,25 @@ def register(request):
         firstName = request.POST['firstName'],
         lastName = request.POST['lastName'],
         email = request.POST['email'],
+        image = request.FILES['image'],
         username = request.POST['username'],
-        password = hashedPw
-        
+        password = hashedPw,
+       
     )
     request.session['user_id'] = newUser.id
-    return redirect('/success/')
+    return HttpResponseRedirect('/success/')
 
+def uploadImage(request):
+    if request.method == "POST":
+        user = User()
+        if len(request.FILES) != 0:
+            user.image = request.FILES['image']
+        user.save()
+        return HttpResponseRedirect('/success/')
 
 def logout(request):
     request.session.clear()
-    return redirect ('/')
+    return redirect('/')
 
 def daily(request):
     return render(request, ('daily.html'))
@@ -187,9 +196,10 @@ def addMessage(request):
 
 def message(request):
     Message.objects.create(
-        message = request.POST['message'], 
+        message = request.POST['message'],
+        image = request.FILES['image'],
         user = User.objects.get(id=request.session['user_id']))
-    return redirect('/success/')
+    return HttpResponseRedirect('/success/')
 
 
 
@@ -203,16 +213,18 @@ def editMessage(request, message_id):
 
 def updateMessage(request, message_id):
     toUpdate = Message.objects.get(id=message_id)
-    toUpdate.message = request.POST['message']
+    toUpdate.message = request.POST['message'],
+    toUpdate.image = request.FILES['image'],
     #toUpdate.user_id = request.POST['user_id']
     toUpdate.save()
 
-    return redirect('/success/')
+    return HttpResponseRedirect('/success/')
 
 def deleteMessage(request, message_id):
     delete = Message.objects.get(id=message_id)
     delete.delete()
     return redirect('/success/')
+
 
 def message_like(request, id):
     likeMessage = Message.objects.get(id=id)
@@ -223,7 +235,7 @@ def message_like(request, id):
 def comment_like(request, id):
     likecomment = Comment.objects.get(id=id)
     userLike = User.objects.get(id=request.session['user_id'])
-    likecomment.comment_like.add(userLike)
+    likecomment.user_likes.add(userLike)
     return redirect('/success/')
 
 def addComment(request, message_id):
@@ -242,13 +254,14 @@ def addComment(request, message_id):
     return render(request, 'daily.html', context)
 
 def comment(request):
-    print(request.POST['message_id'])
+    print(request.POST['comment_id'])
     Comment.objects.create(
-        comment = request.POST['comment'], 
+        comment = request.POST['comment'],
+        image = request.FILES['image'],
         user = User.objects.get(id=request.session['user_id']), 
-        message = Message.objects.get(id = request.POST['message_id'])
+        message = Message.objects.get(id = request.POST['comment_id'])
     )
-    return redirect('/success/')
+    return HttpResponseRedirect('/success/')
 
 
 def editComment(request, comment_id):
@@ -261,7 +274,8 @@ def editComment(request, comment_id):
 
 def updateComment(request, comment_id):
     toUpdate = Comment.objects.get(id=comment_id)
-    toUpdate.comment = request.POST['comment']
+    toUpdate.comment = request.POST['comment'],
+    toUpdate.image = request.FILES['image'],
     #toUpdate.user_id = request.POST['user_id']
     toUpdate.save()
 
@@ -297,15 +311,23 @@ def editUser(request, user_id):
     }
     return render(request, 'editUser.html', context)
 
+# def fileUpload(request, ):
+#     if request.method == 'POST':
+#         newdoc = Document(
+#             docfile=request.FILES['docfile'],
+#         )
+#         newdoc.save()
+#         return HttpResponseRedirect('/success/')
 
 def updateUser(request, user_id):
-    update = User.objects.get(id=user_id)
-    update.firstName = request.POST['firstName']
-    update.lastName = request.POST['lastName']
-    update.email = request.POST['email']
-    update.username = request.POST['username']
-    update.save()
-    return redirect('/users/')
+    if request.method == "POST":
+        update = User.objects.get(id=user_id)
+        update.firstName = request.POST['firstName']
+        update.lastName = request.POST['lastName']
+        update.email = request.POST['email']
+        update.username = request.POST['username']
+        update.save()
+        return redirect('/profile/')
 
 def deleteUser(request, user_id):
     delete = User.objects.get(id=user_id)

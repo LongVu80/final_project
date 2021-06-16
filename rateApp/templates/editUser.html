@@ -13,7 +13,6 @@
             <nav class="navbar">
             <ul>
                 <li><a href="/logout">Log Out</a></li>
-                <li><a href="/profile/">Your Profile</a></li>
                 <li><a href="/success/">Daily Feeds</a></li>
                 <li><a href="/zipcode/">Enter new zipcode</a></li>
             </ul>
@@ -24,8 +23,18 @@
             <p>Your username: <b><u>{{user.username}}</u></b><br>
             Email address: <b><u>{{user.email}}</u></b></p>
         </div>
+        <div class="pic">
+            <form action='/uploadImage/' method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <section>
+                    <label for="" class="form-label">Image</label>
+                    <input type="file" Required name="image" class="form-control">
+                </section>   
+                <button type="submit">Submit</button>         
+            </form>
+        </div>
         <div class='login'>
-            <form action='/updateUser/{{user.id}}' method='post'>
+            <form action='/updateUser/{{user.id}}' method='post' enctype="multipart/form-data">
                 {% csrf_token %}
                 <section>
                     <label for='firstName'>First Name:</label>
@@ -43,6 +52,7 @@
                     <label form='email'>Email Address:</label>
                     <input type='email' name='email' id='email' value={{editUser.email}}>
                 </section>
+                
                 <button>Update User</button>
             </form>
             <a href='/deleteUser/{{user.id}}'><button>Delete User</button></a>

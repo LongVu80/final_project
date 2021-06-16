@@ -13,6 +13,7 @@
           <ul>
             <li><a href="/logout">Log Out</a></li>
             <li><a href="/users">All Users</a></li>
+            <li><a href="/success/">Daily Feeds</a></li>
             <li><a href="/profile/">Your Profile</a></li>
             <li><a href="/zipcode/">Enter Zipcode</a></li>
           </ul>
@@ -21,10 +22,12 @@
     <h2>Welcome, {{users.lastName}} {{users.firstName}}!!</h2>
     <p> To err is human, write something wrong? Edit it here</p>
     
-    <form action="/updateMessage/{{ editMessage.id }}" method="post">
+    <form action="/editMessage/{{ editMessage.id }}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <section>
-            <label for='message'>Your message:</label>
+            <label for="" class="form-label">Image</label>
+            <input type="file" name="image"><br>
+            <label for='message'>Your message:</label><br>
             <input type='text' name='message' id='message' value="{{editMessage.message}}" class="box">
         </section>
         <button>Save Edits</button>

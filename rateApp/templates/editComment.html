@@ -14,6 +14,7 @@
           <ul>
             <li><a href="/logout">Log Out</a></li>
             <li><a href="/users">All Users</a></li>
+            <li><a href="/success/">Daily Feeds</a></li>
             <li><a href="/profile/">Your Profile</a></li>
             <li><a href="/zipcode/">Enter Zipcode</a></li>
           </ul>
@@ -22,11 +23,13 @@
     <h2>Welcome {{users.firstName}} {{users.lastName}}!!</h2>
     <p> To err is human, write something wrong? Edit it here</p>
     
-    <form action="/updateComment/{{ editComment.id }}" method="post">
+    <form action="/updateComment/{{ editComment.id }}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <section>
+            <label for="" class="form-label">Image</label>
+            <input type="file" name="image"><br>
             <label for='comment'>Your comment:</label>
-            <textarea class="box" name="message" placeholder="Type your message here!!"></textarea>
+            <textarea class="box" name="comment" placeholder="Type your comment here!!"></textarea>
         </section>
         <button>Save Edits</button>
     </form>
