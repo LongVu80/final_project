@@ -61,6 +61,8 @@
                 {% else %}
                     <p>{{ message.user.firstName }} {{ message.user.lastName}} posted at {{message.created_at}}:</p>
                     <h4>{{message.message}}</h4>
+                    <p>{{ message.user_likes.count }} <br>
+                        <a href="/messageLike/{{message.id}}"><button>Like Message</button></a>
                 {% endif %}
                 
                 
@@ -73,17 +75,17 @@
                             <h5>{{comment.comment}}</h5>
                             <p><a href='/editComment/{{comment.id}}' class="ed">Edit Comment</a> / 
                                 <a href="/deleteComment/{{comment.id}}" class="del">Delete Comment</a>
-                                <p>{{ comment.comment_like.count }} <br>
-                                    <a href="/commentLike/{{comment.id}}"><button>Like Comment</button></a>
+                                <p>{{ comment.user_likes.count }} <br>
+                                <a href="/commentLike/{{comment.id}}"><button>Like Comment</button></a>
                             </p>
                         </div>
                     {% else %}
                         <div class="comment1">
                             <p>{{ comment.user.firstName }} {{ comment.user.lastName}} commented at {{comment.created_at}}:</p>
                             <h5>{{comment.comment}}</h5>
-                        </div>
-                        <p>{{ comment.comment_like.count }} <br>
+                            <p>{{ comment.user_likes.count }} <br>
                             <a href="/commentLike/{{comment.id}}"><button>Like Comment</button></a>
+                        </div>
                     {% endif %}
                 {% endfor %}
                     

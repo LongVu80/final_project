@@ -23,7 +23,7 @@
     <h2>Welcome {{users.firstName}} {{users.lastName}}!!</h2>
     <p> To err is human, write something wrong? Edit it here</p>
     
-    <form action="/updateComment/{{ editComment.id }}" method="post" enctype="multipart/form-data">
+    <form action="/updateComment/{{ editComment.id }}" method="post">
         {% csrf_token %}
             <label for='comment'>Your comment:</label>
             <textarea class="box" name="comment" placeholder="Type your comment here!!"></textarea>
