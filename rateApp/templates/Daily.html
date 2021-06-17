@@ -33,6 +33,7 @@
                     <button>Enter</button>
                 </form>
             </div>
+            <button class="dkMode">Toggle Light/Dark Mode</button>
         <div>
             
             <h2>Post a message for discussion:</h2>
@@ -59,6 +60,9 @@
                         <p>{{ message.user_likes.count }} Likes<br>
                         <a href="/messageLike/{{message.id}}"><button>Like</button></a>
                 {% else %}
+                {% if message.image %}
+                        <img src="{{message.image.url}}">
+                    {% endif %}
                     <p>{{ message.user.firstName }} {{ message.user.lastName}} posted at {{message.created_at}}:</p>
                     <h4>{{message.message}}</h4>
                     <p>{{ message.user_likes.count }} Likes<br>
@@ -105,5 +109,7 @@
             {% endfor %}
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
 </body>
 </html>
