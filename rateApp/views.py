@@ -36,7 +36,6 @@ def register(request):
         firstName = request.POST['firstName'],
         lastName = request.POST['lastName'],
         email = request.POST['email'],
-        image = request.FILES['image'],
         username = request.POST['username'],
         password = hashedPw,
        
