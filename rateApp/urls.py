@@ -30,7 +30,6 @@ urlpatterns = [
     path('deleteMessage/<int:message_id>', views.deleteMessage),
     path('deleteComment/<int:comment_id>', views.deleteComment),
     path('zipcode/', views.zipcode),
-    path('uploadImage/', views.uploadImage),
     path('editMessage/<int:message_id>', views.editMessage),
     path('updateMessage/<int:message_id>', views.updateMessage),
     path('editComment/<int:comment_id>', views.editComment),

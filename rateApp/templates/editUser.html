@@ -24,15 +24,6 @@
             Email address: <b><u>{{user.email}}</u></b></p>
         </div>
         <div class="pic">
-            <form action='/uploadImage/' method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <section>
-                    <label for="" class="form-label">Image</label>
-                    <input type="file" Required name="image" class="form-control">
-                </section>   
-                <button type="submit">Submit</button>         
-            </form>
-        </div>
         <div class='login'>
             <form action='/updateUser/{{user.id}}' method='post' enctype="multipart/form-data">
                 {% csrf_token %}

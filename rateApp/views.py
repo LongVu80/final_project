@@ -44,13 +44,6 @@ def register(request):
     request.session['user_id'] = newUser.id
     return HttpResponseRedirect('/success/')
 
-def uploadImage(request):
-    if request.method == "POST":
-        user = User()
-        if len(request.FILES) != 0:
-            user.image = request.FILES['image']
-        user.save()
-        return HttpResponseRedirect('/success/')
 
 def logout(request):
     request.session.clear()
@@ -273,7 +266,7 @@ def editComment(request, comment_id):
 
 def updateComment(request, comment_id):
     toUpdate = Comment.objects.get(id=comment_id)
-    toUpdate.comment = request.POST['comment'],
+    toUpdate.comment = request.POST['comment']
     #toUpdate.user_id = request.POST['user_id']
     toUpdate.save()
 

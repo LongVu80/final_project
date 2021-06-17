@@ -41,7 +41,6 @@ def filepath(request, filename):
 class User(models.Model):
     firstName = models.CharField(max_length=45)
     lastName = models.CharField(max_length=45)
-    image = models.ImageField(upload_to=filepath, null=True, blank=True)
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=45)
     password = models.CharField(max_length=45)
